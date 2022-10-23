@@ -1,10 +1,10 @@
 FROM node:18 AS development
 WORKDIR /app
 ENV NODE_ENV=development
-
-COPY package*.json .
+COPY package.json ./
 RUN npm install
+RUN npm install -g nodemon
 
-COPY . .
+COPY . ./
 EXPOSE 3000
-CMD [ "node", "index.js" ]
+CMD [ "npm", "run", "dev" ]
