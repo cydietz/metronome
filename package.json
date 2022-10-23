@@ -1,0 +1,9 @@
+{
+    "author": {
+        "name": "cydietz",
+        "email": "cydietz@googlemail.com"
+    },
+    "scripts": {
+        "start": "node start"
+    }
+}

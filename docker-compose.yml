@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  react:
+    container_name: react
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ./:/app
+    ports:
+      - 3000:3000
+    stdin_open: true
+    environment:
+      - ENV_DEV=development
