@@ -1,15 +1,10 @@
-FROM node:19-alpine AS development
-
+FROM node:18 AS development
+WORKDIR /app
 ENV NODE_ENV=development
 
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
+COPY package*.json .
 RUN npm install
 
 COPY . .
-
 EXPOSE 3000
-
-CMD [ "npm", "start" ]
+CMD [ "node", "index.js" ]
