@@ -2,12 +2,15 @@ version: "3.8"
 services:
   node-app:
     container_name: node
+    stdin_open: true
     build:
       context: ./
       dockerfile: Dockerfile
       target: development
+    environment:
+      - NODE_ENV=development
     volumes:
-      - ./:/app
+      - ./:/app/
+      - /app/node_modules
     ports:
       - 3000:3000
-    stdin_open: true
