@@ -2,14 +2,16 @@ import React from 'react';
 import useSound from 'use-sound';
 import { useState } from 'react';
 import clickSound from './../sounds/blipSelect.wav';
+import { useEffect } from 'react';
 
 export function Metronome() {
 
     const [count, setCount] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
-    const [bpm, setBpm] = useState(60);
+    const [bpm, setBpm] = useState(130);
     const [measure, setMeasure] = useState(4);
-    
+    const [timer, setTimer] = useState(0);
+
 
     const [playAccent] = useSound(
         clickSound,
@@ -21,37 +23,37 @@ export function Metronome() {
         { volume: 0.25 }
     )
 
-
     const ToggleMetronome = () => {
         if (isRunning) {
             setCount(0)
             setIsRunning(false)
+            clearInterval(timer)
         } else {
-            setMeasure(4)           
+            setMeasure(4)
             setIsRunning(true)
+            setTimer(setInterval(() => playClicks(), (( 60 / bpm ) * 1000)))
+            playClicks()
         }
-        setInterval(() => playClicks(), ((60/{bpm})*1000))
     }
-    
+
     const handleBPMChange = (e) => {
         setBpm(e.target.value)
-        setCount(0)
     }
 
     const playClicks = () => {
-        if ({count} === 0) {
-           playAccent()
+        if (count === 0) {
+            playAccent()
         } else {
-           playClick()
-        } 
+            playClick()
+        }
 
-        ({count} === {measure} - 1) ? setCount(0) : setCount(count + 1)
+        (count === measure - 1) ? setCount(0) : setCount(count + 1)
     }
 
     return (
         <div className='metronome'>
             <button type="button" onClick={() => ToggleMetronome()}>{isRunning ? "Stop" : "Play"}</button>
-            <input type="text" name="bpm" value={bpm} onChange={(e) => handleBPMChange(e)}></input> 
+            <input type="text" name="bpm" value={bpm} onChange={(e) => handleBPMChange(e)}></input>
             <strong>{count}</strong>
         </div>
     )
