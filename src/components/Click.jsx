@@ -14,6 +14,4 @@ export function Click(props) {
         clickSound,
         { volume: 0.27, playbackRate: 1.1 }
     )
-
-   
 }
