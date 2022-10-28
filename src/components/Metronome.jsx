@@ -1,64 +1,58 @@
 import React from 'react';
+import useSound from 'use-sound';
+import { useState } from 'react';
+import clickSound from './../sounds/blipSelect.wav';
 
-export class Metronome extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            isRunning: false,
-            bpm: 130,
-            measure: 4,
-            count: 0
-        };
-    }
+export function Metronome() {
 
-    toggleMetronome = () => {
-        if (this.state.isRunning) {
-            this.setState({
-                count: 0,
-                isRunning: false
-            })
-            clearInterval(this.timer)
+    const [count, setCount] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [bpm, setBpm] = useState(60);
+    const [measure, setMeasure] = useState(4);
+    
+
+    const [playAccent] = useSound(
+        clickSound,
+        { volume: 0.27, playbackRate: 1.1 }
+    )
+
+    const [playClick] = useSound(
+        clickSound,
+        { volume: 0.25 }
+    )
+
+
+    const ToggleMetronome = () => {
+        if (isRunning) {
+            setCount(0)
+            setIsRunning(false)
         } else {
-            this.timer = setInterval(this.playClick, (60/this.state.bpm) * 1000)
-            this.setState({
-                isRunning: true
-            })
+            setMeasure(4)           
+            setIsRunning(true)
         }
+        setInterval(() => playClicks(), ((60/{bpm})*1000))
     }
     
-    handleBPMChange(event) {
-        clearInterval(this.timer)
-        this.setState({
-            bpm: event.target.value, 
-            count: 0
-            })
-        this.timer = setInterval(this.playClick, (60/this.state.bpm) * 1000)
+    const handleBPMChange = (e) => {
+        setBpm(e.target.value)
+        setCount(0)
     }
 
-    playClick = () => {
-        // if (this.state.count == 0) {
-        //     const [playAccent] = useSound(
-        //         clickSound,
-        //         { volume: 0.27, playbackRate: 1.1 }
-        //     )
-        // } else {
-        //     useSound(
-        //         clickSound,
-        //         { volume: 0.25 }
-        //     )
-        // } 
+    const playClicks = () => {
+        if ({count} === 0) {
+           playAccent()
+        } else {
+           playClick()
+        } 
 
-        this.state.count == this.state.measure - 1 ? this.setState({count: 0}) : this.setState({count: this.state.count + 1})
+        ({count} === {measure} - 1) ? setCount(0) : setCount(count + 1)
     }
 
-
-    render() {
-        return (
-            <div className='metronome'>
-                <button type="button" onClick={this.toggleMetronome}>{this.state.isRunning ? "Stop" : "Play"}</button>
-                <input type="text" name="bpm" value={this.state.bpm} onChange={(event) => this.handleBPMChange(event)}></input> 
-                <strong>{this.state.count}</strong>
-            </div>
-        )
-    }
+    return (
+        <div className='metronome'>
+            <button type="button" onClick={() => ToggleMetronome()}>{isRunning ? "Stop" : "Play"}</button>
+            <input type="text" name="bpm" value={bpm} onChange={(e) => handleBPMChange(e)}></input> 
+            <strong>{count}</strong>
+        </div>
+    )
 }
