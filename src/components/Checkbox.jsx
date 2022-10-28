@@ -1,8 +1,6 @@
 import React from 'react';
 import useSound from 'use-sound';
-import popDown from './../sounds/pop-down.mp3';
-import popUpOn from './../sounds/pop-up-on.mp3';
-import popUpOff from './../sounds/pop-up-off.mp3';
+import popDown from './../sounds/blipSelect.wav';
 
 
 export function Checkbox() {
@@ -12,15 +10,15 @@ export function Checkbox() {
 
     const [playActive] = useSound(
         popDown,
-        { volume: 0.25 }
+        { volume: 0.25, playbackRate: 0.9}
     );
     const [playOn] = useSound(
-        popUpOn,
+        popDown,
         { volume: 0.25 }
     );
     const [playOff] = useSound(
-        popUpOff,
-        { volume: 0.25 }
+        popDown,
+        { volume: 0.25,  playbackRate: 1.1}
     );
 
     return (
